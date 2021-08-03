@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Header,
@@ -8,48 +8,39 @@ import {
   FormInput,
 } from "./Searchbar.styles";
 
-class Searchbar extends Component {
-  state = {
-    value: "",
-  };
+function Searchbar({ change }) {
+  const [value, setValue] = useState("");
 
-  submitForm = (e) => {
+  function submitForm(e) {
     e.preventDefault();
 
-    if (this.state.value.trim() === "") {
-      // react-toastify вставить
+    if (value.trim() === "") {
       return;
     }
 
-    this.props.change(this.state.value);
-    this.setState({ value: "" });
-  };
-
-  handleChange = (e) => {
-    this.setState({ value: e.target.value.toLowerCase() });
-  };
-
-  render() {
-    return (
-      <Header>
-        <Form onSubmit={this.submitForm}>
-          <FormBtn type="submit">
-            <FormLabel>Search</FormLabel>
-          </FormBtn>
-
-          <FormInput
-            className="SearchForm-input"
-            type="text"
-            autocomplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-        </Form>
-      </Header>
-    );
+    change(value);
+    setValue("");
   }
+
+  return (
+    <Header>
+      <Form onSubmit={submitForm}>
+        <FormBtn type="submit">
+          <FormLabel>Search</FormLabel>
+        </FormBtn>
+
+        <FormInput
+          className="SearchForm-input"
+          type="text"
+          autocomplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={value}
+          onChange={(e) => setValue(e.target.value.toLowerCase())}
+        />
+      </Form>
+    </Header>
+  );
 }
 
 Searchbar.propTypes = {
