@@ -37,7 +37,7 @@ function App() {
     setPage(nextPage);
     fetchPhotos(query, nextPage)
       .then((response) => {
-        setPhotos([...photos, ...response.hits]);
+        setPhotos((prev) => [...prev, ...response.hits]);
         setIsLoader(false);
       })
       .finally(() => {
